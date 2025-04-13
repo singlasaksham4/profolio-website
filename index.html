@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saksham Singla - Developer Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-bg: #1a202c;
+            --dark-text: #f7fafc;
+            --light-bg: #f7fafc;
+            --light-text: #1a202c;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            transition: var(--transition);
+            scroll-behavior: smooth;
+        }
+        
+        body.dark {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+        
+        body.light {
+            background-color: var(--light-bg);
+            color: var(--light-text);
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        body.dark .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--dark-text);
+        }
+        
+        body.light .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: var(--light-text);
+        }
+        
+        .skill-pill {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        body.dark .skill-pill {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        body.light .skill-pill {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-card {
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        body.dark .project-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.light .project-card {
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 14px;
+            width: 2px;
+            height: calc(100% + 16px);
+            background-color: var(--primary-color);
+            opacity: 0.5;
+        }
+        
+        .timeline-item:last-child:after {
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: rgba(52, 152, 219, 0.2);
+            margin-bottom: 15px;
+        }
+        
+        .progress-value {
+            height: 100%;
+            border-radius: 4px;
+            background-color: var(--primary-color);
+        }
+        
+        .contact-link {
+            transition: var(--transition);
+        }
+        
+        .contact-link:hover {
+            color: var(--primary-color);
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+
+        /* Navigation styles */
+        nav {
+            transition: var(--transition);
+        }
+        
+        body.dark nav {
+            background-color: rgba(26, 32, 44, 0.95);
+        }
+        
+        body.light nav {
+            background-color: rgba(247, 250, 252, 0.95);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover:after,
+        .nav-link.active:after {
+            width: 100%;
+        }
+        
+        /* Page styles */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* YouTube video container */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            margin-bottom: 2rem;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Login page styles */
+        #login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-container {
+            max-width: 400px;
+            width: 90%;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background-color: white;
+        }
+
+        body.dark .login-container {
+            background-color: #2d3748;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        body.dark .login-input {
+            background-color: #4a5568;
+            border-color: #4a5568;
+            color: white;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .login-button:hover {
+            background-color: #2980b9;
+        }
+
+        .login-remember {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .login-remember input {
+            margin-right: 10px;
+        }
+
+        /* Hide main content until logged in */
+        #main-content {
+            display: none;
+        }
+
+        #main-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="light">
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon text-xl" id="theme-icon"></i>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page active">
+        <div class="login-container">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Welcome</h2>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">Sign in to access Saksham's Portfolio</p>
+            </div>
+            
+            <form id="login-form" onsubmit="return login(event)">
+                <div class="mb-4">
+                    <label for="newUsername" class="block text-gray-700 dark:text-gray-300 mb-2">Create Username</label>
+                    <input type="text" id="newUsername" class="login-input" placeholder="Enter your desired username" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="username" class="block text-gray-700 dark:text-gray-300 mb-2">Username</label>
+                    <input type="text" id="username" class="login-input" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                    <input type="password" id="password" class="login-input" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="login-remember">
+                    <input type="checkbox" id="remember" class="rounded text-blue-500">
+                    <label for="remember" class="text-gray-700 dark:text-gray-300 ml-2">Remember me</label>
+                </div>
+                
+                <button type="submit" class="login-button">Sign In</button>
+
+                <button type="button" class="login-button mt-4" onclick="googleLogin()">Sign In with Google</button>
+                
+                <div class="text-center mt-6">
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">
+                        For demo: use "admin" as username and "password" as password
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until login) -->
+    <div id="main-content">
+        <!-- Navigation -->
+        <nav class="fixed top-0 left-0 w-full z-50 shadow-md">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex flex-wrap items-center justify-between">
+                    <a href="#" onclick="showPage('home')" class="text-2xl font-bold">Saksham Singla</a>
+                    
+                    <button id="menu-toggle" class="lg:hidden focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    
+                    <div id="menu" class="hidden lg:flex w-full lg:w-auto">
+                        <ul class="flex flex-col lg:flex-row lg:space-x-8 mt-4 lg:mt-0">
+                            <li><a href="#" onclick="showPage('home')" class="nav-link py-2 lg:py-0 block active">Home</a></li>
+                            <li><a href="#" onclick="showPage('projects')" class="nav-link py-2 lg:py-0 block">Projects</a></li>
+                            <li><a href="#" onclick="showPage('videos')" class="nav-link py-2 lg:py-0 block">Videos</a></li>
+                            <li><a href="#" onclick="showPage('experience')" class="nav-link py-2 lg:py-0 block">Experience</a></li>
+                            <li><a href="#" onclick="showPage('contact')" class="nav-link py-2 lg:py-0 block">Contact</a></li>
+                            <li><a href="#" onclick="logout()" class="nav-link py-2 lg:py-0 block text-red-500">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <!-- Header Section -->
+            <header class="container mx-auto px-4 py-20 mt-16 flex flex-col items-center justify-center text-center">
+                <h1 class="text-5xl font-bold mb-4">Welcome, <span id="displayName"></span>!</h1>
+                <h2 class="text-2xl mb-6">Software Developer</h2>
+                <p class="text-xl max-w-2xl mb-8">Building innovative solutions with clean, efficient, and maintainable code.</p>
+                <div class="flex space-x-4">
+                    <a href="#" onclick="showPage('contact')" class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">Contact Me</a>
+                    <a href="#" onclick="showPage('projects')" class="px-6 py-3 border border-blue-600 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900 transition duration-300">View Projects</a>
+                </div>
+            </header>
+
+            <!-- About Section -->
+            <section id="about" class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center">About Me</h2>
+                <div class="md:flex items-start">
+                    <div class="md:w-1/3 flex justify-center mb-8 md:mb-0">
+                        <div class="w-64 h-64 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center">
+                            <i class="fas fa-user-circle text-8xl text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <p class="text-lg mb-6">
+                            I'm Saksham Singla, a passionate software developer with over 5 years of experience in creating robust and 
+                            scalable applications. My journey in coding began during my university years, and 
+                            I've been hooked ever since.
+                        </p>
+                        <p class="text-lg mb-6">
+                            I specialize in full-stack development with a focus on JavaScript frameworks 
+                            and cloud technologies. I enjoy tackling complex problems and turning them into 
+                            simple, elegant solutions.
+                        </p>
+                        <p class="text-lg mb-6">
+                            When I'm not coding, you can find me hiking, reading tech blogs, or contributing 
+                            to open-source projects. I believe in continuous learning and staying updated with 
+                            the latest industry trends.
+                        </p>
+                        <div class="flex flex-wrap mt-8">
+                            <a href="#" class="mr-6 mb-4 contact-link"><i class="fab fa-github text-2xl mr-2"></i> GitHub</a>
+                            <a href="#" class="mr-6 mb-4 contact-link"><i class="fab fa-linkedin text-2xl mr-2"></i> LinkedIn</a>
+                            <a href="https://youtube.com/@sakshamsingla4?si=d1EuuA6SRStRSYui" target="_blank" class="mr-6 mb-4 contact-link"><i class="fab fa-youtube text-2xl mr-2"></i> YouTube</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center">Skills</h2>
+                
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Programming Languages</h3>
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>JavaScript</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>Python</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>Java</span>
+                                <span>75%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>TypeScript</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Frameworks & Technologies</h3>
+                        <div class="flex flex-wrap">
+                            <span class="skill-pill">React</span>
+                            <span class="skill-pill">Node.js</span>
+                            <span class="skill-pill">Express</span>
+                            <span class="skill-pill">Vue.js</span>
+                            <span class="skill-pill">Django</span>
+                            <span class="skill-pill">Flask</span>
+                            <span class="skill-pill">MongoDB</span>
+                            <span class="skill-pill">PostgreSQL</span>
+                            <span class="skill-pill">Docker</span>
+                            <span class="skill-pill">Kubernetes</span>
+                            <span class="skill-pill">AWS</span>
+                            <span class="skill-pill">Firebase</span>
+                            <span class="skill-pill">GraphQL</span>
+                            <span class="skill-pill">Redux</span>
+                            <span class="skill-pill">TailwindCSS</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12">
+                    <h3 class="text-xl font-semibold mb-6">Additional Skills</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <h4 class="font-medium mb-2">Development Tools</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Git & GitHub</li>
+                                <li>VS Code</li>
+                                <li>Jira</li>
+                                <li>Webpack</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-2">Methodologies</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Agile/Scrum</li>
+                                <li>TDD</li>
+                                <li>CI/CD</li>
+                                <li>Microservices</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-2">Soft Skills</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Team Leadership</li>
+                                <li>Problem Solving</li>
+                                <li>Technical Documentation</li>
+                                <li>Client Communication</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Projects Page -->
+        <div id="projects" class="page mt-24">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold mb-12 text-center">My Projects</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project 1 -->
+                    <div class="project-card p-5">
+                        <div class="h-48 bg-gray-300 mb-4 flex items-center justify-center">
+                            <i class="fas fa-laptop-code text-5xl text-gray-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">E-commerce Platform</h3>
+                        <p class="mb-4">A full-featured online store built with React, Node.js, and MongoDB with payment integration and admin dashboard.</p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="skill-pill text-xs">React</span>
+                            <span class="skill-pill text-xs">Node.js</span>
+                            <span class="skill-pill text-xs">MongoDB</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-blue-600 hover:underline">Live Demo</a>
+                            <a href="#" class="text-blue-600 hover:underline">GitHub</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 2 -->
+                    <div class="project-card p-5">
+                        <div class="h-48 bg-gray-300 mb-4 flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-5xl text-gray-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Task Management App</h3>
+                        <p class="mb-4">A mobile-first task management application with real-time updates, notifications and collaborative features.</p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="skill-pill text-xs">React Native</span>
+                            <span class="skill-pill text-xs">Firebase</span>
+                            <span class="skill-pill text-xs">Redux</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-blue-600 hover:underline">Live Demo</a>
+                            <a href="#" class="text-blue-600 hover:underline">GitHub</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 3 -->
+                    <div class="project-card p-5">
+                        <div class="h-48 bg-gray-300 mb-4 flex items-center justify-center">
+                            <i class="fas fa-chart-line text-5xl text-gray-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Data Visualization Dashboard</h3>
+                        <p class="mb-4">Interactive analytics dashboard for visualizing complex datasets with customizable charts and export capabilities.</p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="skill-pill text-xs">Vue.js</span>
+                            <span class="skill-pill text-xs">D3.js</span>
+                            <span class="skill-pill text-xs">Python</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-blue-600 hover:underline">Live Demo</a>
+                            <a href="#" class="text-blue-600 hover:underline">GitHub</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 4 -->
+                    <div class="project-card p-5">
+                        <div class="h-48 bg-gray-300 mb-4 flex items-center justify-center">
+                            <i class="fas fa-robot text-5xl text-gray-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">AI Content Generator</h3>
+                        <p class="mb-4">Web application that uses machine learning to generate and optimize content for various platforms and purposes.</p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="skill-pill text-xs">Python</span>
+                            <span class="skill-pill text-xs">TensorFlow</span>
+                            <span class="skill-pill text-xs">Flask</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-blue-600 hover:underline">Live Demo</a>
+                            <a href="#" class="text-blue-600 hover:underline">GitHub</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 5 -->
+                    <div class="project-card p-5">
+                        <div class="h-48 bg-gray-300 mb-4 flex items-center justify-center">
+                            <i class="fas fa-cloud text-5xl text-gray-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Serverless API Platform</h3>
+                        <p class="mb-4">A collection of microservices built with AWS Lambda, API Gateway, and DynamoDB for scalable backend operations.</p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="skill-pill text-xs">AWS</span>
+                            <span class="skill-pill text-xs">Serverless</span>
+                            <span class="skill-pill text-xs">Node.js</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-blue-600 hover:underline">Live Demo</a>
+                            <a href="#" class="text-blue-600 hover:underline">GitHub</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 6 -->
+                    <div class="project-card p-5">
+                        <div class="h-48 bg-gray-300 mb-4 flex items-center justify-center">
+                            <i class="fas fa-comments text-5xl text-gray-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Real-time Chat Application</h3>
+                        <p class="mb-4">End-to-end encrypted messaging platform with group chats, file sharing, and video call capabilities.</p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="skill-pill text-xs">WebSockets</span>
+                            <span class="skill-pill text-xs">WebRTC</span>
+                            <span class="skill-pill text-xs">Express</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-blue-600 hover:underline">Live Demo</a>
+                            <a href="#" class="text-blue-600 hover:underline">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-16">
+                    <a href="#" onclick="showPage('videos')" class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">View My Videos</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Videos Page -->
+        <div id="videos" class="page mt-24">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold mb-8 text-center">My Videos</h2>
+                <p class="text-lg text-center mb-12">Check out my YouTube channel for tutorials, coding tips, and project walkthroughs.</p>
+                
+                <div class="mb-10 text-center">
+                    <a href="https://youtube.com/@sakshamsingla4?si=d1EuuA6SRStRSYui" target="_blank" class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-300">
+                        <i class="fab fa-youtube text-2xl mr-2"></i> Visit My YouTube Channel
+                    </a>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- Video 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLu0W_9lII9agiCUZYRsvtGTXdxkzPyItg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold mb-2">Web Development Tutorial</h3>
+                            <p class="mb-4">Learn how to build modern, responsive websites from scratch using HTML, CSS, and JavaScript.</p>
+                            <div class="flex flex-wrap">
+                                <span class="skill-pill text-xs">HTML</span>
+                                <span class="skill-pill text-xs">CSS</span>
+                                <span class="skill-pill text-xs">JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpR" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold mb-2">React.js Crash Course</h3>
+                            <p class="mb-4">A comprehensive introduction to React.js, covering components, state, hooks, and more.</p>
+                            <div class="flex flex-wrap">
+                                <span class="skill-pill text-xs">React</span>
+                                <span class="skill-pill text-xs">JavaScript</span>
+                                <span class="skill-pill text-xs">Web Dev</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 3 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLu0W_9lII9ai8tfcLAlhXvQNeuqvtNz1H" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold mb-2">Python for Beginners</h3>
+                            <p class="mb-4">Start your journey with Python programming language with these easy-to-follow tutorials.</p>
+                            <div class="flex flex-wrap">
+                                <span class="skill-pill text-xs">Python</span>
+                                <span class="skill-pill text-xs">Programming</span>
+                                <span class="skill-pill text-xs">Beginners</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 4 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLu0W_9lII9aiL0kysYlfSOUgY5rNlOhUd" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold mb-2">Full-Stack Project From Scratch</h3>
+                            <p class="mb-4">Build a complete application from frontend to backend with this comprehensive tutorial series.</p>
+                            <div class="flex flex-wrap">
+                                <span class="skill-pill text-xs">Full-Stack</span>
+                                <span class="skill-pill text-xs">MERN</span>
+                                <span class="skill-pill text-xs">Project</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Experience Page -->
+        <div id="experience" class="page mt-24">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold mb-8 text-center">Experience & Education</h2>
+                
+                <!-- Work Experience Section -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold mb-8">Work Experience</h3>
+                    
+                    <div class="timeline">
+                        <!-- Experience 1 -->
+                        <div class="timeline-item">
+                            <div class="mb-2">
+                                <h3 class="text-xl font-bold">Senior Full-
+                            </div>
+                            <p class="mb-4">
+                                Leading a team of 5 developers on multiple client projects, architecting scalable solutions, 
+                                and implementing best practices for code quality and performance.
+                            </p>
+                            <ul class="list-disc list-inside mb-2">
+                                <li>Reduced application load time by 40% through code optimization and lazy loading techniques</li>
+                                <li>Implemented CI/CD pipeline reducing deployment time from days to minutes</li>
+                                <li>Mentored junior developers and conducted code reviews</li>
+                                <li>Migrated legacy systems to modern technology stack</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Experience 2 -->
+                        <div class="timeline-item">
+                            <div class="mb-2">
+                                <h3 class="text-xl font-bold">Frontend Developer</h3>
+                                <p class="text-lg">Digital Solutions Ltd. | 2018 - 2020</p>
+                            </div>
+                            <p class="mb-4">
+                                Developed responsive web applications using React, Redux, and modern JavaScript features
+                                while collaborating with UX designers and backend engineers.
+                            </p>
+                            <ul class="list-disc list-inside mb-2">
+                                <li>Built interactive dashboards for data visualization</li>
+                                <li>Implemented responsive designs for mobile-first applications</li>
+                                <li>Optimized site performance and accessibility</li>
+                                <li>Integrated with RESTful APIs and GraphQL endpoints</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Experience 3 -->
+                        <div class="timeline-item">
+                            <div class="mb-2">
+                                <h3 class="text-xl font-bold">Software Developer Intern</h3>
+                                <p class="text-lg">StartUp Innovations | 2017 - 2018</p>
+                            </div>
+                            <p class="mb-4">
+                                Assisted in developing features for a SaaS platform, fixed bugs, and participated in daily 
+                                scrum meetings while learning agile methodologies.
+                            </p>
+                            <ul class="list-disc list-inside mb-2">
+                                <li>Developed frontend components using Vue.js</li>
+                                <li>Created automated tests using Jest</li>
+                                <li>Fixed bugs and improved existing features</li>
+                                <li>Participated in code reviews and team planning sessions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Education Section -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-8">Education</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Degree 1 -->
+                        <div class="p-6 border rounded-lg">
+                            <h3 class="text-xl font-bold mb-2">Master of Science in Computer Science</h3>
+                            <p class="mb-2">Stanford University | 2016 - 2018</p>
+                            <p class="mb-4">Specialized in Artificial Intelligence and Machine Learning</p>
+                            <p class="font-medium">Relevant Coursework:</p>
+                            <ul class="list-disc list-inside">
+                                <li>Advanced Algorithms</li>
+                                <li>Machine Learning</li>
+                                <li>Natural Language Processing</li>
+                                <li>Distributed Systems</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Degree 2 -->
+                        <div class="p-6 border rounded-lg">
+                            <h3 class="text-xl font-bold mb-2">Bachelor of Science in Software Engineering</h3>
+                            <p class="mb-2">University of California, Berkeley | 2012 - 2016</p>
+                            <p class="mb-4">Graduated with Honors, GPA: 3.8/4.0</p>
+                            <p class="font-medium">Relevant Coursework:</p>
+                            <ul class="list-disc list-inside">
+                                <li>Data Structures and Algorithms</li>
+                                <li>Database Systems</li>
+                                <li>Web Development</li>
+                                <li>Operating Systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12">
+                        <h3 class="text-xl font-bold mb-6">Certifications</h3>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="p-4 border rounded-lg">
+                                <h4 class="font-medium mb-2">AWS Certified Solutions Architect</h4>
+                                <p>Amazon Web Services | 2021</p>
+                            </div>
+                            <div class="p-4 border rounded-lg">
+                                <h4 class="font-medium mb-2">Google Cloud Professional Developer</h4>
+                                <p>Google Cloud | 2020</p>
+                            </div>
+                            <div class="p-4 border rounded-lg">
+                                <h4 class="font-medium mb-2">Certified Kubernetes Administrator</h4>
+                                <p>Cloud Native Computing Foundation | 2019</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page mt-24">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold mb-12 text-center">Get In Touch</h2>
+                
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                        <p class="mb-8 text-lg">
+                            I'm currently open to freelance projects and full-time opportunities. Feel free to reach out 
+                            if you'd like to discuss potential collaborations or just want to say hello!
+                        </p>
+                        
+                        <div class="mb-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-envelope text-xl mr-4"></i>
+                                <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5c2f3d372f343d31722f35323b303d1c39243d312c3039723f3331">[email&#160;protected]</a></span>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-phone text-xl mr-4"></i>
+                                <span>+1 (555) 123-4567</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-xl mr-4"></i>
+                                <span>San Francisco, CA</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-10">
+                            <h4 class="font-bold mb-4 text-xl">Follow Me</h4>
+                            <div class="flex space-x-6">
+                                <a href="#" class="text-2xl contact-link"><i class="fab fa-github"></i></a>
+                                <a href="#" class="text-2xl contact-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://youtube.com/@sakshamsingla4?si=d1EuuA6SRStRSYui" target="_blank" class="text-2xl contact-link"><i class="fab fa-youtube"></i></a>
+                                <a href="#" class="text-2xl contact-link"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-2xl contact-link"><i class="fab fa-medium"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">Send a Message</h3>
+                        <form>
+                            <div class="mb-4">
+                                <label for="name" class="block mb-2">Name</label>
+                                <input type="text" id="name" class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block mb-2">Email</label>
+                                <input type="email" id="email" class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="mb-4">
+                                <label for="subject" class="block mb-2">Subject</label>
+                                <input type="text" id="subject" class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block mb-2">Message</label>
+                                <textarea id="message" rows="5" class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-10 mt-20 border-t">
+            <div class="container mx-auto px-4 text-center">
+                <p>© 2023 Saksham Singla. All rights reserved.</p>
+                <p class="mt-2">Made with <i class="fas fa-heart text-red-500"></i> and modern web technologies</p>
+                <div class="mt-4 flex justify-center space-x-6">
+                    <a href="#" class="text-xl contact-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-xl contact-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://youtube.com/@sakshamsingla4?si=d1EuuA6SRStRSYui" target="_blank" class="text-xl contact-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-xl contact-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (body.classList.contains('light')) {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        
+        // Check for saved theme preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'dark') {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        });
+        
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Page navigation function
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update active nav link
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate the clicked nav link
+            const clickedLink = document.querySelector(`.nav-link[onclick="showPage('${pageId}')"]`);
+            if (clickedLink) {
+                clickedLink.classList.add('active');
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Hide mobile menu after navigation (on mobile)
+            if (window.innerWidth < 1024) {
+                document.getElementById('menu').classList.add('hidden');
+            }
+        }
+        
+        // Login function
+        function login(event) {
+            event.preventDefault();
+
+            const newUsername = document.getElementById('newUsername').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+
+            // Simple validation - in a real site, this would be a server request
+            if (username === 'admin' && password === 'password') {
+                // Hide login page
+                document.getElementById('login-page').classList.remove('active');
+
+                // Show main content
+                document.getElementById('main-content').classList.add('active');
+
+                // Set login status in localStorage if remember is checked
+                if (remember) {
+                    localStorage.setItem('loggedIn', 'true');
+                } else {
+                    sessionStorage.setItem('loggedIn', 'true');
+                }
+
+                // Store the new username
+                localStorage.setItem('username', newUsername);
+
+                return false;
+            } else {
+                alert('Invalid username or password. Please try again.');
+                return false;
+            }
+        }
+
+        // Logout function
+        function logout() {
+            // Clear login status
+            localStorage.removeItem('loggedIn');
+            sessionStorage.removeItem('loggedIn');
+            
+            // Hide main content
+            document.getElementById('main-content').classList.remove('active');
+            
+            // Show login page
+            document.getElementById('login-page').classList.add('active');
+            
+            // Clear form fields
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        // Check login status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('loggedIn') === 'true' || sessionStorage.getItem('loggedIn') === 'true';
+            
+            if (isLoggedIn) {
+                // Hide login page
+                document.getElementById('login-page').classList.remove('active');
+                
+                // Show main content
+                document.getElementById('main-content').classList.add('active');
+            }
+        });
+
+        function googleLogin() {
+            alert('Google login functionality not implemented. Please add your Google API credentials and implementation here.');
+            // Add your Google login implementation here
+        }
+
+        // Function to display the username
+        function displayUsername() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('displayName').innerText = username;
+            }
+        }
+
+        // Call displayUsername on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('loggedIn') === 'true' || sessionStorage.getItem('loggedIn') === 'true';
+            
+            if (isLoggedIn) {
+                // Hide login page
+                document.getElementById('login-page').classList.remove('active');
+                
+                // Show main content
+                document.getElementById('main-content').classList.add('active');
+                displayUsername();
+            }
+        });
+    </script>
+</body>
+</html>
